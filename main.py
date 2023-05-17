@@ -3,8 +3,8 @@ import random
 from threads import Node
 
 def mian():
-    print("Witaj w symulatorze!")
-    print("Podaj liczbę węzłów:")
+    print("Symulation started!")
+    print("Number of nodes: ")
     n = int(input())
     threads = []
 
