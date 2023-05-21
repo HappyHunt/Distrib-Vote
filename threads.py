@@ -4,10 +4,11 @@ from threading import Thread, Lock
 
 
 def set_mode():
-    if random.random() < 0.25:
+    if random.random() < 0.3:
         return 1
     else:
         return 0
+
 
 class Node(Thread):
     def __init__(self, i):
@@ -20,11 +21,11 @@ class Node(Thread):
         self.name = "Node_" + str(self.number + 1)
         self.value = random.randint(0, 1)
         self.mode = set_mode()
-        self.decisionList = []
-        self.finalDescision = -1
+        self.decision_list = []
+        self.final_decision = -1
 
     def run(self):
-        print(self.name + " -> chose: " + str(self.value) + " is he broken? " + ("false", "true") [self.mode > 0] + "\n")
+        print(self.name + " -> chose: " + str(self.value) + " is he broken? " + ("false", "true")[self.mode > 0] + "\n")
 
     def send(self, data, name):
         self.lock.acquire()
@@ -51,24 +52,23 @@ class Node(Thread):
             print(str(i))
 
         # przygotowanie danych
-        preparedData = []
+        prepared_data = []
         for column in zip(*self.votes):
             modified_column = [value for value in column]
-            preparedData.append(modified_column)
+            prepared_data.append(modified_column)
 
         # ustalanie konsensusu z otrzymanych informacji
-        for list in preparedData:
+        for list_of_vote in prepared_data:
             #  myczek do znalezienia najszęstszego głosu
-            # TODO co robic w przypadku remisu w głosowaniu
-            count = Counter(list)
-            mostCommonElement = max(count, key=count.get)
-            self.decisionList.append(mostCommonElement)
+            count = Counter(list_of_vote)
+            most_common_element = max(count, key=count.get)
+            self.decision_list.append(most_common_element)
 
-        print("Readed votes from decision array: " + str(self.decisionList))
-        count = Counter(self.decisionList)
-        mostCommonElement = max(count, key=count.get)
-        self.finalDescision = mostCommonElement
-        print("Final decision: " + str(self.finalDescision))
+        print("Readed votes from decision array: " + str(self.decision_list))
+        count = Counter(self.decision_list)
+        most_common_element = max(count, key=count.get)
+        self.final_decision = most_common_element
+        print("Final decision: " + str(self.final_decision))
         self.lock.release()
 
     def set_val(self, x):

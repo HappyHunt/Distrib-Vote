@@ -2,6 +2,7 @@ import random
 
 from threads import Node
 
+
 def mian():
     print("Symulation started!")
     print("Number of nodes: ")
@@ -34,6 +35,7 @@ def mian():
 
     for t in threads:
         t.join()
+
 
 if __name__ == "__main__":
     mian()
